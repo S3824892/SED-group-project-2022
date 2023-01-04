@@ -53,6 +53,7 @@ public:
             myfile.close();
             cout << "Saved to the file! \n";
             creditPoint += 500;
-        }  
-    };
+        }
+        return 0;
+    }
 };
