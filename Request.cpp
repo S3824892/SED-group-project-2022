@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Request.h"
 
 Request::Request(int id, Member occupant, House house) {

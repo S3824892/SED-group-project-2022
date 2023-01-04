@@ -2,41 +2,57 @@
 #define HOUSE_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <vector>
 #include "Member.h"
-
-using std::string;
+#define FILE_NAME "House.dat"
 
 class House {
 protected:
+    string HName;
     Member owner;
     int id;
-    string location;
+    string City;
     string descriptions;
-    double rating;
-    double minOccuRating;
+    double HouseRating;
+    double minScore;
     bool listed;
-    bool occupied;
+    bool occupateStatus;
 public:
-    House(Member owner, int id, string location, string descriptions, double rating, double minOccuRating, bool listed,
-          bool occupied);
+    House();
+
+    House(Member owner, int id, string City, string descriptions, double HouseRating, double minScore, bool listed,
+          bool occupateStatus);
 
     Member getMember();
 
     int getId();
 
-    string getLocation();
+    string getCity();
 
     string getDescriptions();
 
-    double getRating();
+    double getHouseRating();
 
-    double getMinOccuRating();
+    double getMinScore();
 
     bool getListed();
 
-    bool getOccupied();
+    bool getOccupateStatus();
 
-    void setOccupied(bool o);
+    void setOccupateStatus(bool o);
+
+    void readHouse();
+
+    void displayHouse();
 };
+
+int writeToFile(House house, string filename);
+
+int readFromFile(string filename);
+
+int deleteFromFile(string filename);
 
 #endif
