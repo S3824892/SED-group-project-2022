@@ -1,18 +1,20 @@
 #include <iostream>
-#include <fstream>
 using std::cout;
 using std::cin;
 using std::string;
 
 int main(){
-// Welcome screen
+// Display welcome screen
   cout << "EEET2482/COSC2082 ASSIGNMENT" << "\n";
   cout << "VACATION HOUSE EXCHANGE APPLICATION" << "\n";
   cout << "Instructors: Mr. Linh Tran & Phong Ngo" << "\n";
-  cout << "Group: Group Name" << "\n";
-  cout << "sXXXXXXX, Student Name" << "\n";
-  cout << "sXXXXXXX, Student Name" << "\n";
-  cout << "sXXXXXXX, Student Name" << "\n";
+  cout << "Group: Group 28" << "\n";
+  cout << "s3824892, Chau Minh Kha" << "\n";
+  cout << "s3902460, Nguyen Minh Phu" << "\n";
+  cout << "s3752577, Thai Le" << "\n";
+  cout << "s3927195, The Anh" << "\n";
+  cout << "s3915202, Trinh Viet Quy" << "\n";
+  cout << "Welcome to our House Exchange App!"
   cout << "Use the app as 1. Guest   2. Member   3. Admin" << "\n";
   cout << "Enter your choice: ";
   int user_type;
@@ -72,7 +74,7 @@ int main(){
       cout << "3. View Available Houses" << "\n";
       cout << "4. Request to Occupy House" << "\n";
       cout << "5. View Occupy Requests" << "\n";
-      cout << "6. Leave Review" << "\n";
+      cout << "6. Rate Occupied Houses" << "\n";
       cout << "Enter your choice: ";
       int choice;
       cin >> choice;
