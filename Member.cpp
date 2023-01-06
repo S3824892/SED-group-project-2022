@@ -14,6 +14,7 @@ protected:
     int occupierScore;
     int phoneNumber;
     bool occupyStatus;
+    House houses;
 
 public:
     Member(string username = "", string password = "", int creditPoint = 0,
