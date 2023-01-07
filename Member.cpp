@@ -58,10 +58,10 @@ public:
     //Search
     void SearchAvailableHouses(int member_id, int start_time, int end_time, string city){
         // Check if the city is available
-        if (std::find(AVAILABLE_CITIES.begin(), AVAILABLE_CITIES.end(), city)== AVAILABLE_CITIES.end()){
-          cout << "Error: City is not available." << "\n";
-          return;
-       }
+        if (city != "Hanoi" || city != "Hue" || city !="Sai Gon"){
+           cout << "Error: City is not available." << "\n";
+           return;
+        }
         cout << "ID\tLocation\tDescription\tHouse Rating\tOwner ID" << "\n";
         for (auto& h : houses_){
           if (h.info().location()== city && h.is_available()&& h.owner_id()!= member_id &&
@@ -73,8 +73,8 @@ public:
        }
     }
 
-    //Rate houses
-    void RateHouse(int occupier_id, int house_id, int score, string comment){
+    //Rate Occupier
+    void RateOccupier(int occupier_id, int house_id, int score, string comment){
       // Check if the occupier has occupied the house
       if (std::find(houses_[house_id].occupiers().begin(), houses_[house_id].occupiers().end(), occupier_id)== houses_[house_id].occupiers().end()){
         cout << "Error: Occupier has not occupied this house." << "\n";
