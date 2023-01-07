@@ -56,60 +56,78 @@ public:
             creditPoint += 500;
         }
     //Search
-    void SearchAvailableHouses(int member_id, int start_time, int end_time, string city){
-        // Check if the city is available
-        if (city != "Hanoi" || city != "Hue" || city !="Sai Gon"){
-           cout << "Error: City is not available." << "\n";
-           return;
-        }
-        cout << "ID\tLocation\tDescription\tHouse Rating\tOwner ID" << "\n";
-        for (auto& h : houses_){
-          if (h.info().location()== city && h.is_available()&& h.owner_id()!= member_id &&
-              members_[member_id].credit_points()>= h.requestors().size()* (end_time - start_time + 1)&&
-              members_[member_id].occupier_rating()>= min_occupier_rating){
-            cout << h.id()<< "\t" << h.info().location()<< "\t" << h.info().description()<< "\t"
-                      << h.house_rating()<< "\t" << h.owner_id()<< "\n";
-         }
-       }
-    }
-
-    //Rate Occupier
-    void RateOccupier(int occupier_id, int house_id, int score, string comment){
-      // Check if the occupier has occupied the house
-      if (std::find(houses_[house_id].occupiers().begin(), houses_[house_id].occupiers().end(), occupier_id)== houses_[house_id].occupiers().end()){
-        cout << "Error: Occupier has not occupied this house." << "\n";
-        return;
+void SearchHouses(int member_id, int start_time, int end_time, string city){
+    // Check if the city is available
+    if (city != "Hanoi" || city != "Hue" || city !="Sai Gon"){
+      cout << "Error: City is not available." << "\n";
+      return;
+   }
+    cout << "ID\tLocation\tDescription\tHouse Rating\tOwner ID" << "\n";
+    for (House& h : houses){
+      if (h.City()== city && h.occupateStatus()&& h.owner_id()!= Member.id &&
+          members[member_id].credit_points()>= h.requestors().size()* (end_time - start_time + 1)&&
+          members[member_id].occupier_rating()>= min_occupier_rating){
+        cout << h.id()<< "\t" << h.info().location()<< "\t" << h.info().description()<< "\t"
+                  << h.house_rating()<< "\t" << h.owner_id()<< "\n";
      }
-    Review review;
-      review.id = reviews_.size();
-      review.house_id = house_id;
-      review.occupier_id = occupier_id;
-      review.score = score;
-      review.comment = comment;
-      reviews_.push_back(review);
+   }
+}
 
-      // Update occupier rating
-      int total_score = 0;
-      int num_reviews = 0;
-      for (auto& r : reviews_){
-        if (r.occupier_id == occupier_id){
-          total_score += r.score;
-          num_reviews++;
-       }
-     }
-      members_[occupier_id].SetOccupierRating(total_score / num_reviews);
+//Rate houses
+void RateOccupier(int owner_id, int occupier_id, int score, const std::string& comment) {
+  auto owner_it = std::find_if(members_.begin(), members_.end(), [&](const Member& m) {
+    return m.GetId() == owner_id;
+  });
+  if (owner_it == members_.end()) {
+    std::cout << "Error: Owner not found." << std::endl;
+    return;
+  }
+  Member& owner = *owner_it;
 
-      // Update house rating
-      total_score = 0;
-      num_reviews = 0;
-      for (auto& r : reviews_){
-        if (r.house_id == house_id){
-          total_score += r.score;
-          num_reviews++;
-       }
-     }
-      houses_[house_id].SetHouseRating(total_score / num_reviews);
-    }    
+  auto occupier_it = std::find_if(members_.begin(), members_.end(), [&](const Member& m) {
+    return m.GetId() == occupier_id;
+  });
+  if (occupier_it == members_.end()) {
+    std::cout << "Error: Occupier not found." << std::endl;
+    return;
+  }
+  Member& occupier = *occupier_it;
+
+  if (!owner.HasOccupiedHouse(occupier_id)) {
+    std::cout << "Error: Occupier has not occupied a house owned by this member." << std::endl;
+    return;
+  }
+
+  occupier.LeaveReview(owner_id, score, comment);
+  }
+
+//Rate house
+void RateHouse(int member_id, int house_id, int score, const std::string& comment) {
+  auto member_it = std::find_if(members_.begin(), members_.end(), [&](const Member& m) {
+    return m.GetId() == member_id;
+  });
+  if (member_it == members_.end()) {
+    std::cout << "Error: Member not found." << std::endl;
+    return;
+  }
+  Member& member = *member_it;
+
+  auto house_it = std::find_if(houses_.begin(), houses_.end(), [&](const House& h) {
+    return h.GetId() == house_id;
+  });
+  if (house_it == houses_.end()) {
+    std::cout << "Error: House not found." << std::endl;
+    return;
+  }
+  House& house = *house_it;
+
+  if (!house.IsOccupiedBy(member_id)) {
+    std::cout << "Error: Member has not occupied this house." << std::endl;
+    return;
+  }
+
+  house.LeaveReview(member_id, score, comment);
+  }    
         return 0;
     }
 };
