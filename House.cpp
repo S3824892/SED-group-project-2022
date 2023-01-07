@@ -8,7 +8,7 @@ using namespace std;
 
 class House{
 protected:
-    int owner_id;
+    Member* owner;  // Pointer to the owner of the house
     string HName;
     string City;
     int HouseRating;
@@ -22,11 +22,10 @@ public:
         cout << endl << "INPUT HOUSE DETAILS" << endl;
         cout << "House Name: ";
         cin >> HName;
-        owner_id = Member.id
         cout << "City: ";
         cin >> City;
         cout << "Occupation Status: ";
-        occupateStatus = false;
+        cin >> occupateStatus;
         HouseRating = 5;
         cout << "Minimum Score: ";
         cin >> minScore;
@@ -34,12 +33,26 @@ public:
 
     void displayHouse() {
         cout << left << setw(10) << HName
-             << left << setw(10) << Owner_id
+             << left << setw(10) << owner->GetId()  // Use member function to get owner's ID
              << left << setw(10) << City
              << left << setw(10) << occupateStatus
              << left << setw(10) << HouseRating
              << left << setw(10) << setprecision(5) << minScore << endl;
     }
+
+    // Member functions to set/get the values of the member variables
+    void SetOwner(Member* owner) { this->owner = owner; }
+    Member* GetOwner() const { return owner; }
+    void SetName(const std::string& name) { HName = name; }
+    std::string GetName() const { return HName; }
+    void SetCity(const std::string& city) { City = city; }
+    std::string GetCity() const { return City; }
+    void SetOccupyStatus(bool status) { occupateStatus = status; }
+    bool GetOccupyStatus() const { return occupateStatus; }
+    void SetHouseRating(int rating) { HouseRating = rating; }
+    int GetHouseRating() const { return HouseRating; }
+    void SetMinScore(int min_score) { minScore = min_score; }
+    int GetMinScore() const { return minScore; }
 };
 
 int writeToFile(House house, string filename) {
@@ -84,21 +97,36 @@ int readFromFile(string filename) {
     file.close();
     return 0;
 }
-
 int deleteFromFile(string filename){
     House house;
     string houseName;
     cout << "Please input house name you want to delete: ";
     cin >> houseName;
     fstream file;
-    file.open(filename,ios::in|ios::binary);
+    file.open(filename, ios::in | ios::binary);
     if (!file){
         cout << "Error opening file" << endl;
         return -1;
     }
-    vector <string> HName;
-    while (getline(file,houseName))
-        HName.push_back(houseName);
+
+    // Read all houses from the file into a vector
+    vector<House> houses;
+    while (file.read((char*)&house, sizeof(house))) {
+        houses.push_back(house);
+    }
     file.close();
+
+    // Erase the house with the matching name from the vector
+    houses.erase(std::remove_if(houses.begin(), houses.end(), [&](const House& h) {
+        return h.GetName() == houseName;
+    }), houses.end());
+
+    // Re-write the updated vector to the file
+    file.open(filename, ios::out | ios::binary | ios::trunc);
+    for (const auto& h : houses) {
+        file.write((char*)&h, sizeof(h));
+    }
+    file.close();
+
     return 0;
 }
