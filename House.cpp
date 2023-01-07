@@ -8,18 +8,21 @@ using namespace std;
 
 class House{
 protected:
+    int owner_id;
     string HName;
     string City;
     int HouseRating;
     bool occupateStatus;
     int minScore;
 public:
+    
     House();
     
     void readHouse() {
         cout << endl << "INPUT HOUSE DETAILS" << endl;
         cout << "House Name: ";
         cin >> HName;
+        owner_id = Member.id
         cout << "City: ";
         cin >> City;
         cout << "Occupation Status: ";
@@ -31,6 +34,7 @@ public:
 
     void displayHouse() {
         cout << left << setw(10) << HName
+             << left << setw(10) << Owner_id
              << left << setw(10) << City
              << left << setw(10) << occupateStatus
              << left << setw(10) << HouseRating
