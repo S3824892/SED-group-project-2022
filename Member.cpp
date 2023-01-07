@@ -4,7 +4,7 @@
 #include <string>
 #include <iomanip>
 using namespace std;
-#define FILE_NAME "user.dat"
+#define FILE_NAME "Member.dat"
 
 class Member{
 protected:
