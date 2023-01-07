@@ -73,7 +73,7 @@ void SearchHouses(int member_id, int start_time, int end_time, string city){
    }
 }
 
-//Rate houses
+//Rate Occupiers
 void RateOccupier(int owner_id, int occupier_id, int score, const std::string& comment) {
   auto owner_it = std::find_if(members_.begin(), members_.end(), [&](const Member& m) {
     return m.GetId() == owner_id;
