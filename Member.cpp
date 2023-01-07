@@ -32,48 +32,46 @@ protected:
     
 public:
     User();
-    int addMember(){
-        std::fstream myfile;
-        myfile.open("user.dat", std::ios::out); 
-        if (!myfile.is_open()) { 
-            cout << "Fail to create/open file \n";
-            return -1;
-        }else{//Get the username and password from console and save to file
+    int addMember() {
+      std::fstream myfile;
+      myfile.open(FILE_NAME, std::ios::out); 
+      if (!myfile.is_open()) { 
+        std::cout << "Fail to create/open file \n";
+        return -1;
+      } else {
+        // Get the username and password from console and save to file
+        std::cout << "Enter your username: ";
+        std::getline(std::cin, username);
+        myfile << username << std::endl;
 
-            //adding username
-            cout << "Enter your username: ";
-            cin >> username; //ignore previous '\n' entered by user
-            getline(cin, username); //read a line from console
-            myfile << username;
+        std::cout << "Enter the password: ";
+        std::getline(std::cin, password);
+        myfile << password << std::endl;
 
-            //adding password
-            cout << "Enter the password: ";
-            cin >> password; //ignore previous '\n' entered by user
-            getline(cin, password); //read a line from console
-            myfile << username;
-            myfile.close();
-            cout << "Saved to the file! \n";
-            creditPoint += 500;
-        }
-    //Search
-void SearchHouses(int member_id, int start_time, int end_time, string city){
-    // Check if the city is available
-    if (city != "Hanoi" || city != "Hue" || city !="Sai Gon"){
-      cout << "Error: City is not available." << "\n";
-      return;
-   }
-    cout << "ID\tLocation\tDescription\tHouse Rating\tOwner ID" << "\n";
-    for (House& h : houses){
-      if (h.City()== city && h.occupateStatus()&& h.owner_id()!= Member.id &&
-          members[member_id].credit_points()>= h.requestors().size()* (end_time - start_time + 1)&&
-          members[member_id].occupier_rating()>= min_occupier_rating){
-        cout << h.id()<< "\t" << h.info().location()<< "\t" << h.info().description()<< "\t"
-                  << h.house_rating()<< "\t" << h.owner_id()<< "\n";
-     }
-   }
+        myfile.close();
+        std::cout << "Saved to the file! \n";
+        creditPoint += 500;
+      }
+
+// Search for houses
+void SearchHouses(int member_id, int start_time, int end_time, const std::string& city) {
+  // Check if the city is available
+  if (city != "Hanoi" && city != "Hue" && city != "Sai Gon") {
+    std::cout << "Error: City is not available." << std::endl;
+    return;
+  }
+  std::cout << "ID\tLocation\tDescription\tHouse Rating\tOwner ID" << std::endl;
+  for (auto& h : houses_) {
+    if (h.GetCity() == city && h.IsOccupyStatus() && h.GetOwnerId() != member_id &&
+        members_[member_id].GetCreditPoints() >= h.GetRequestors().size() * (end_time - start_time + 1) &&
+        members_[member_id].GetOccupierRating() >= h.GetMinOccupierRating()) {
+      std::cout << h.GetId() << "\t" << h.GetInfo().location() << "\t" << h.GetInfo().description() << "\t"
+                << h.GetHouseRating() << "\t" << h.GetOwnerId() << std::endl;
+    }
+  }
 }
 
-//Rate Occupiers
+// Rate occupiers
 void RateOccupier(int owner_id, int occupier_id, int score, const std::string& comment) {
   auto owner_it = std::find_if(members_.begin(), members_.end(), [&](const Member& m) {
     return m.GetId() == owner_id;
@@ -97,6 +95,12 @@ void RateOccupier(int owner_id, int occupier_id, int score, const std::string& c
     std::cout << "Error: Occupier has not occupied a house owned by this member." << std::endl;
     return;
   }
+
+  // Update occupier score and add review
+  occupier.AddReview(score, comment);
+  occupier.SetOccupierScore(occupier.GetOccupierScore() + score);
+  std::cout << "Success: Occupier rating updated." << std::endl;
+}
 
   occupier.LeaveReview(owner_id, score, comment);
   }
@@ -125,9 +129,8 @@ void RateHouse(int member_id, int house_id, int score, const std::string& commen
     std::cout << "Error: Member has not occupied this house." << std::endl;
     return;
   }
-
   house.LeaveReview(member_id, score, comment);
-  }    
+}    
         return 0;
     }
 };
