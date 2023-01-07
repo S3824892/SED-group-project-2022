@@ -9,9 +9,9 @@ string Admin_password;
 public:
 bool LogInAdmin() {
   cout << "Enter admin username: ";
-  cin >> username;
+  cin >> Admin_username;
   cout << "Enter admin password: ";
-  cin >> password;
+  cin >> Admin_password;
   if (Admin_username == "admin" && Admin_password == "password") {
     cout << "Login as Admin successfuly" << "/n";
     return true;
