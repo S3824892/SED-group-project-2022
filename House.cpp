@@ -81,3 +81,7 @@ void House::showAllHouseInfo()
          << " | " << setw(14) << this->occupyStatus
          << " | " << setw(12) << this->description << "\n";
 }
+
+
+
+

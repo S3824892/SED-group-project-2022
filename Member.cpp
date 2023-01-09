@@ -73,3 +73,4 @@ void Member::showAllMemberInfo()
          << " | " << setw(12) << this->occupierRating
          << " | " << setw(12) << this->house.getId() << "\n";
 }
+

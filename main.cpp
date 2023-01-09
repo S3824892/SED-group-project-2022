@@ -1,13 +1,14 @@
 
+
 #include "Member.h"
 #include "House.h"
 #include "Request.h"
 #include "Data.h"
 
-#include <iostream>
-#include <string>
 #include <vector>
 #include <iomanip>
+#include <iostream>
+#include <string>
 
 // TODO: figure out how to handle the id system of House, Member, and Request
 
@@ -94,11 +95,10 @@ void showAdminOptions()
 }
 
 /** Main Start - Our application run here **/
-
 /** How to compile and run **/
-/*  g++ Main.cpp House.cpp Member.cpp Request.cpp Admin.cpp Data.cpp -o Main
-/* ./Main
-*/
+//  g++ Main.cpp House.cpp Member.cpp Request.cpp Admin.cpp Data.cpp -o Main
+// ./Main
+
 
 int main(int argc, char *argv[])
 {
